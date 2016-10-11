@@ -4,7 +4,14 @@
 	<title></title>
 </head>
 <body>
-	<h1>Hello world!</h1>
+	<h1>{{ title }} Hello world!</h1>
+	{% for obj in object_list %}
+		{{obj.title}}</br>
+		{{obj.content}}</br>
+		{{obj.timestamp}}</br>
+		{{obj.update}}</br>
+		{{obj.id}}</br>
+	{% endfor %}
 
 </body>
 </html>
