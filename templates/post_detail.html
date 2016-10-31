@@ -1,9 +1,10 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title></title>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block title %}
+	{{instance.title}} | {{block.super}}
+{% endblock title %}
+
+{%block content%}
 	<h1>{{ title }}</h1>
 	
 		{{instance.title}}</br>
@@ -11,7 +12,6 @@
 		{{instance.timestamp}}</br>
 		{{instance.update}}</br>
 		{{instance.id}}</br>
-	
 
-</body>
-</html>
+
+{%endblock content%}
