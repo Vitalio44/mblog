@@ -1,10 +1,11 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html>
 <head>
 	<title>{%block title%}Django blog 1.9{%endblock title%}</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}" />
 </head>
 <body>
-
 {% if massages %}
 <div class="messages">
 	<ul class="messages">
@@ -14,13 +15,6 @@
 	</ul>
 </div>
 {%endif%}
-
-<div class="container">
-	{% block content %}
-
-
-	{%endblock content%}
-</div>
-
+<div class="container">{% block content %}{%endblock content%}</div>
 </body>
 </html>

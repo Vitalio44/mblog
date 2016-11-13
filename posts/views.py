@@ -19,8 +19,7 @@ def post_create(request):
 		instance = form.save(commit=False)
 		instance.save()
 		messages.success(request, "Good!")
-		return HttpResponseRedirect(instance.get_absolute_url())
-		
+		return HttpResponseRedirect(instance.get_absolute_url())		
 	context = {
 		"form": form,
 	}
