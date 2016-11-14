@@ -5,10 +5,12 @@
 
 
 {%block content%}
+<div class="col-sm-8 col-sm-offset-2">
 	<h1>Form</h1>
 	<form method="POST" action="">
 		{% csrf_token %}
 		{{ form.as_p }}
-		<input type="submit" name="Create Post" />
+		<input type="submit" class="btn btn-dafault" name="Create Post" />
 	</form>
+</div>
 {%endblock content%}
