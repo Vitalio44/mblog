@@ -26,11 +26,11 @@ def post_list(request):
 
 
 def post_create(request):
-	form = PostForm(request.POST or None)
+	form = PostForm(request.POST or None, request.FILES or None)
 	if form.is_valid():
 		instance = form.save(commit=False)
 		instance.save()
-		messages.success(request, "Good!")
+		messages.success(request, "Created")
 		return HttpResponseRedirect(instance.get_absolute_url())		
 	context = {
 		"form": form,
@@ -49,7 +49,7 @@ def post_detail(request, id=None):
 
 def post_update(request, id=None):
 	instance = get_object_or_404(Post, id=id)
-	form = PostForm(request.POST or None, instance=instance)
+	form = PostForm(request.POST or None, request.FILES or None, instance=instance)
 	if form.is_valid():
 		instance = form.save(commit=False)
 		instance.save()
