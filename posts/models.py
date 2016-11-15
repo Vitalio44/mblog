@@ -2,7 +2,6 @@ from __future__ import unicode_literals
 from django.core.urlresolvers import reverse
 from django.db import models
 
-# Create your models here.
 class Post(models.Model):
     title = models.CharField(max_length=120)
     content = models.TextField()
@@ -17,4 +16,8 @@ class Post(models.Model):
 
     def get_absolut_url(self):
     	return reverse("detail", kwargs={"id": self.id})
+
+    class Meta(object):
+        ordering = ["-timestamp", "-updated"]
+            
     
