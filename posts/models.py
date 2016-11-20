@@ -3,10 +3,12 @@ from __future__ import unicode_literals
 from django.core.urlresolvers import reverse
 from django.template.defaultfilters import slugify
 from django.db.models.signals import pre_save
+from django.conf import settings
 from django.db import models
 
 
 class Post(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1, verbose_name='Пользователь')
     title = models.CharField(max_length=120, verbose_name='Заголовок')
     slug = models.SlugField(unique=True)
     image = models.ImageField(null=True, blank=True, verbose_name='Изображение')
