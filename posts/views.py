@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.http import HttpResponseRedirect, Http404
+from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, get_object_or_404, redirect
 
@@ -9,6 +10,14 @@ from .models import Post
 
 def post_list(request):
     queryset_list = Post.objects.all()
+    search = request.GET.get("s")
+    if search:
+        queryset_list = queryset_list.filter(
+            Q(title__icontains = search) |
+            Q(content__icontains=search) |
+            Q(user__first_name__icontains=search) |
+            Q(user__last_name__icontains=search)
+        ).distinct()
     paginator = Paginator(queryset_list, 5)  # Show 5 contacts per page
     page = request.GET.get('page')
     try:
