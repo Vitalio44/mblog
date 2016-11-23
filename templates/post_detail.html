@@ -9,7 +9,7 @@
 	{% if instance.image %}
 	<img src="{{ instance.image.url }}" class="img-responsive" />		
 	{% endif %}
-	<h1>{{ title }} <small>{{instance.timestamp}}</small></h1>
+	<h1 property="og:title">{{ title }} <small>{{instance.timestamp}}</small></h1>
 
     <p>Автор: {{ instance.user }}</p>
     <p>Поделиться:

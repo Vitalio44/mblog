@@ -31,7 +31,7 @@ def post_list(request):
         queryset = paginator.page(paginator.num_pages)
     context = {
         "object_list": queryset,
-        "title": "List"
+        "title": "News"
     }
     return render(request, "post_list.html", context)
 
