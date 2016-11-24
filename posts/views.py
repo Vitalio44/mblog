@@ -1,3 +1,4 @@
+### -*- coding: utf-8 -*- ###
 from urllib.parse import quote_plus
 from django.contrib import messages
 from django.http import HttpResponseRedirect, Http404

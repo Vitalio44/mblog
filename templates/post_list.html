@@ -1,58 +1,70 @@
 {% extends "base.html" %}
 {% block content %}
-
+{% include "img_top.html" %}
+<div class="main main-raised">
+<div class="container">
 <div class="section">
-<div class="row">
-    <div class="col-md-8 col-md-offset-2 text-center">
-        <h2 class="title">{{ title }}</h2>
-        <h5 class="description">This is the paragraph where you can write more details about your product. Keep you user engaged by providing meaningful information.</h5>
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2 text-center">
+            <h2 class="title">{{ title }}</h2>
+            <h5 class="description">This is the paragraph where you can write more details about your product. Keep you user engaged by providing meaningful information.</h5>
+        </div>
     </div>
-</div>
-<div class="row">
-    <div class="col-md-12 text-right">
-        <form class="navbar-form navbar-right" method="get" action="">
-            <div class="form-group form-white is-empty">
-                <input class="form-control" type="text" name="s" placeholder="Search post" value="{{ request.GET.s }}">
-                <span class="material-input"></span>
-                <button type="submit" value="Search" class="btn btn-white btn-raised btn-fab btn-fab-mini"><i class="material-icons">search</i></button>
+    <div class="row">
+        <div class="col-md-12 text-right">
+            <form class="navbar-form navbar-right" method="get" action="">
+                <div class="form-group form-white is-empty">
+                    <input class="form-control" type="text" name="s" placeholder="Search post" value="{{ request.GET.s }}">
+                    <span class="material-input"></span>
+                    <button type="submit" value="Search" class="btn btn-white btn-raised btn-fab btn-fab-mini"><i class="material-icons">search</i></button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+    {% for obj in object_list %}
+    <div class="col-md-10 col-md-offset-1">
+        <div class="card card-plain card-blog">
+            <div class="row">
+                <div class="col-md-4">
+                    {% if obj.image %}
+                    <div class="card-image">
+                        <img class="img img-raised" src="{{ obj.image.url }}">
+                        <div class="ripple-container"></div></div>
+                    {% endif %}
+                </div>
+                <div class="col-md-8">
+                    <!--<h6 class="category text-info">Canegory</h6>-->
+                    <h3 class="card-title">
+                        <a href="{{ obj.get_absolute_url }}">{{obj.title}}</a>
+                    </h3>
+                    <p class="card-description">{{ obj.content|linebreaks|truncatechars:250 }}</p>
+                    <p class="author">
+                        Автор: <b>{{ obj.user }}</b>, {{obj.timestamp|timesince}}
+                    </p>
+                </div>
             </div>
-        </form>
+        </div>
     </div>
-</div>
-<div class="row">
-{% for obj in object_list %}
-<div class="col-md-6">
-    <div class="card card-raised card-background" {% if obj.image %} style="background-image: url('{{ obj.image.url }}')"{% endif %}>
-        <div class="content">
-            <h6 class="category text-info">{{ obj.user }}</h6>
-            <a href="{{ obj.get_absolute_url }}">
-                <h3 class="card-title">{{obj.title}}<small> {{obj.timestamp|timesince}}</small></h3>
-            </a>
-            <p class="card-description">{{ obj.content|truncatechars:80 }}</p>
-            <a href="{{ obj.get_absolute_url }}" class="btn btn-danger btn-round" role="button">Read Article</a>
+    {% endfor %}
+    </div>
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <ul class="pagination pagination-info">
+                {% if object_list.has_previous %}
+                <li><a href="?page={{ object_list.previous_page_number }}{% if request.GET.s %}&s={{ request.GET.s }}{% endif %}"> назад</a></li>
+                {% endif %}
+                <li class="active"><a>{{ object_list.number }}</a></li>
+                <li><a>из</a></li>
+                <li><a>{{ object_list.paginator.num_pages }}</a></li>
+                {% if object_list.has_next %}
+                <li><a href="?page={{ object_list.next_page_number }}{% if request.GET.s %}&s={{ request.GET.s }}{% endif %}">вперед </a></li>
+                {% endif %}
+            </ul>
         </div>
     </div>
 </div>
-{% endfor %}
 </div>
-
-
-<div class="row">
-    <div class="col-md-12">
-        <ul class="pagination pagination-info">
-            {% if object_list.has_previous %}
-            <li><a href="?page={{ object_list.previous_page_number }}
-            {% if request.GET.s %}&s={{ request.GET.s }}{% endif %}"> назад</a></li>{% endif %}
-            <li class="active">{{ object_list.number }}</li>
-            <li>из</li>
-            <li>{{ object_list.paginator.num_pages }}</li>
-            {% if object_list.has_next %}
-            <li><a href="?page={{ object_list.next_page_number }}
-            {% if request.GET.s %}&s={{ request.GET.s }}{% endif %}">вперед </a></li>{% endif %}
-        </ul>
-    </div>
-</div>
-
 </div>
 {% endblock content %}
 

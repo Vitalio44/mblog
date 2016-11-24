@@ -30,13 +30,3 @@ class Post(models.Model):
     def get_absolute_url(self):
         return reverse("detail", kwargs={"slug": self.slug})
 
-
-def pre_save_post(sender, instance, *args, **kwargs):
-    slug = slugify(instance.title)
-    exists = Post.objects.filter(slug=slug).exists()
-    if exists:
-        slug = "%s-%s" % (slug, instance.id)
-    instance.slug = slug
-
-
-pre_save.connect(pre_save_post, sender=Post)
