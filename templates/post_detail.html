@@ -1,22 +1,41 @@
 {% extends "base.html" %}
-
-{% block title %}
-	{{instance.title}} | {{block.super}}
-{% endblock title %}
-
+{% block title %}{{instance.title}} | {{block.super}}{% endblock title %}
 {%block content%}
-<div class="col-sm-8 col-sm-offset-2">
-	{% if instance.image %}
-	<img src="{{ instance.image.url }}" class="img-responsive" />		
-	{% endif %}
-	<h1 property="og:title">{{ title }} <small>{{instance.timestamp}}</small></h1>
-
-    <p>Автор: {{ instance.user }}</p>
-    <p>Поделиться:
-        <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}">Facebook</a>
-        <a href='https://plus.google.com/share?url={{ request.build_absolute_uri }}'>Google+</a>
-        <a href='https://twitter.com/home?status={{ share_string | truncatechars:50 }}%20{{ request.build_absolute_uri }}'>Twitter</a>
-    </p>
-		{{instance.content|linebreaks}}<br>
+<div class="page-header header-filter header-small" data-parallax="active"
+        {% if instance.image %} style="background-image: url('{{ instance.image.url }}');"{% endif %}>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 text-center">
+                <h1 class="title" property="og:title">{{ title }}</h1>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="main main-raised">
+    <div class="container">
+        <div class="section section-text">
+            <div class="row">
+                <div class="col-md-7 col-md-offset-1">
+                    <h3 class="title">{{ title }}</h3>
+                    <p>{{instance.content|linebreaks}}</p>
+                </div>
+                <div class="col-md-2 col-md-offset-1 stats">
+                    <h4 class="title">Автор</h4>
+                    <ul class="list-unstyled">
+                        <li><b>{{ instance.user }}</b></li>
+                    </ul>
+                    <hr />
+                    <h4 class="title">Share</h4>
+                    <a href="https://twitter.com/home?status=
+                    {{ share_string }}%20{{ request.build_absolute_uri }}" class="btn btn-twitter btn-round">
+                        <i class="fa fa-twitter"></i> Twitter</a>
+                    <a href="https://www.facebook.com/sharer.php?u={{ request.build_absolute_uri }}" class="btn btn-facebook btn-round">
+                        <i class="fa fa-facebook-square"></i> Facebook</a>
+                    <a href="https://plus.google.com/share?url={{ request.build_absolute_uri }}" class="btn btn-google btn-round">
+                        <i class="fa fa-google-plus"></i> Google</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {%endblock content%}
