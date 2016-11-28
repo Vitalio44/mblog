@@ -15,6 +15,8 @@ class Post(models.Model):
     content = models.TextField(max_length = 10000, verbose_name='Контент')
     updated = models.DateTimeField(auto_now=True, auto_now_add=False, verbose_name='Обновлено')
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True, verbose_name='Создано')
+    keywords = models.CharField(max_length=1024, blank=True, null=True)
+    description = models.CharField(max_length=1024, blank=True, null=True)
 
     class Meta:
         verbose_name = 'Статьи'
