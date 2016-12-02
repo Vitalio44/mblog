@@ -7,15 +7,16 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, get_object_or_404, redirect
 
 from .form import PostForm
-from .models import Post
+from .models import Post, Category
 
 
 def post_list(request):
     queryset_list = Post.objects.all()
+    category_list = Category.objects.all()
     search = request.GET.get("s")
     if search:
         queryset_list = queryset_list.filter(
-            Q(title__icontains = search) |
+            Q(title__icontains=search) |
             Q(content__icontains=search) |
             Q(user__first_name__icontains=search) |
             Q(user__last_name__icontains=search)
@@ -32,9 +33,23 @@ def post_list(request):
         queryset = paginator.page(paginator.num_pages)
     context = {
         "object_list": queryset,
-        "title": "News"
+        "category_list": category_list,
+        "title": "Новое"
     }
     return render(request, "post_list.html", context)
+
+
+def show_category(request, category_slug=None):
+    category_show = {}
+    try:
+        category = Category.objects.get(slug=category_slug)
+        pages = Post.objects.filter(category=category)
+        category_show['pages'] = pages
+        category_show['category'] = category
+    except Category.DoesNotExist:
+        category_show['category'] = None
+        category_show['pages'] = None
+    return render(request, 'category.html', category_show)
 
 
 def post_create(request):
@@ -55,7 +70,7 @@ def post_create(request):
 
 def post_detail(request, slug=None):
     instance = get_object_or_404(Post, slug=slug)
-    share_string = quote_plus(instance.content)
+    share_string = quote_plus(instance.title)
     context = {
         "instance": instance,
         "title": instance.title,

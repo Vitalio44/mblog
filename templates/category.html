@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}{{ category.name }} | {{block.super}}{% endblock title %}
+
+{%block content%}
+    <div class="page-header header-filter header-small" data-parallax="active"
+        {% if category.image %} style="background-image: url('{{ category.image.url }}');"{% endif %}>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 text-center">
+                <h1 class="title">{{ category.name }}</h1>
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="main main-raised">
+<div class="container">
+<div class="section">
+{% if category %}
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2 text-center">
+            <h5 class="description">This is the paragraph where you can write more details about your product. Keep you user engaged by providing meaningful information.</h5>
+        </div>
+    </div>
+    <div class="row">
+    {% for page in pages %}
+    <div class="col-md-10 col-md-offset-1">
+        <div class="card card-plain card-blog">
+            <div class="row">
+                <div class="col-md-4">
+                    {% if page.image %}
+                    <div class="card-image">
+                        <img class="img img-raised" src="{{ page.image.url }}">
+                        <div class="ripple-container"></div></div>
+                    {% endif %}
+                </div>
+                <div class="col-md-8">
+                    <!--<h6 class="category text-info">Canegory</h6>-->
+                    <h3 class="card-title">
+                        <a href="{{ page.get_absolute_url }}">{{page.title}}</a>
+                    </h3>
+                    <p class="card-description">{{ page.content|linebreaks|truncatechars:250 }}</p>
+                    <p class="author">
+                        Автор: <b>{{ page.user }}</b>, {{pag.timestamp|timesince}}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    </div>
+{% endif %}
+</div>
+</div>
+</div>
+{% endblock %}

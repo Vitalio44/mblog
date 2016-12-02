@@ -6,7 +6,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-8 col-md-offset-2 text-center">
-                <h1 class="title" property="og:title">{{ title }}</h1>
+                <h1 class="title">{{ title }}</h1>
             </div>
         </div>
     </div>
@@ -26,13 +26,15 @@
                     </ul>
                     <hr />
                     <h4 class="title">Share</h4>
-                    <a href="https://twitter.com/home?status=
-                    {{ share_string }}%20{{ request.build_absolute_uri }}" class="btn btn-twitter btn-round">
+                    <a href="https://twitter.com/home?status={{ share_string }}%20{{ request.build_absolute_uri }}" class="btn btn-twitter btn-round">
                         <i class="fa fa-twitter"></i> Twitter</a>
+                    <a href="http://vk.com/share.php?url={{ request.build_absolute_uri }}" class="btn btn-vk btn-round">
+                        <i class="fa fa-vk"></i> ВКонтакте</a>
                     <a href="https://www.facebook.com/sharer.php?u={{ request.build_absolute_uri }}" class="btn btn-facebook btn-round">
                         <i class="fa fa-facebook-square"></i> Facebook</a>
                     <a href="https://plus.google.com/share?url={{ request.build_absolute_uri }}" class="btn btn-google btn-round">
                         <i class="fa fa-google-plus"></i> Google</a>
+                    <hr />
                 </div>
             </div>
         </div>
