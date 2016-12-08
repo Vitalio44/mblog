@@ -17,9 +17,9 @@ def post_list(request):
     if search:
         queryset_list = queryset_list.filter(
             Q(title__icontains=search) |
-            Q(content__icontains=search) |
-            Q(user__first_name__icontains=search) |
-            Q(user__last_name__icontains=search)
+            Q(content__icontains=search) #|
+            #Q(user__first_name__icontains=search) |
+            #Q(user__last_name__icontains=search)
         ).distinct()
     paginator = Paginator(queryset_list, 5)  # Show 5 contacts per page
     page = request.GET.get('page')
@@ -39,16 +39,15 @@ def post_list(request):
     return render(request, "post_list.html", context)
 
 
-def show_category(request, category_slug=None):
+def show_category(request, slug=None):
     category_show = {}
     try:
-        category = Category.objects.get(slug=category_slug)
+        category = Category.objects.get(slug=slug)
         pages = Post.objects.filter(category=category)
         category_show['pages'] = pages
         category_show['category'] = category
     except Category.DoesNotExist:
-        category_show['category'] = None
-        category_show['pages'] = None
+        raise Http404
     return render(request, 'category.html', category_show)
 
 
@@ -68,8 +67,8 @@ def post_create(request):
     return render(request, "post_form.html", context)
 
 
-def post_detail(request, slug=None):
-    instance = get_object_or_404(Post, slug=slug)
+def post_detail(request, slug=None, category=None):
+    instance = get_object_or_404(Post, slug=slug, category__slug=category)
     share_string = quote_plus(instance.title)
     context = {
         "instance": instance,

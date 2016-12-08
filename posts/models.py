@@ -23,6 +23,10 @@ class Category(models.Model):
     def __str__(self):  # For Python 2, use __unicode__ too
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('show_category', kwargs={'slug': self.slug})
+
+
 
 class Post(models.Model):
     category = models.ForeignKey(Category, default=1, verbose_name='Категория')
@@ -45,4 +49,4 @@ class Post(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse("detail", kwargs={"slug": self.slug})
+        return reverse('detail', kwargs={'slug': self.slug, 'category': self.category})

@@ -2,7 +2,8 @@
 {% block title %}{{instance.title}} | {{block.super}}{% endblock title %}
 {%block content%}
 <div class="page-header header-filter header-small" data-parallax="active"
-        {% if instance.image %} style="background-image: url('{{ instance.image.url }}');"{% endif %}>
+        {% if instance.image %} style="background-image: url('{{ instance.image.url }}');"
+     {% else %}style="background-image: linear-gradient(60deg, #00bcd4, #1f2fa2);"{% endif %}>
     <div class="container">
         <div class="row">
             <div class="col-md-8 col-md-offset-2 text-center">
@@ -25,7 +26,7 @@
                         <li><b>{{ instance.user }}</b></li>
                     </ul>
                     <hr />
-                    <h4 class="title">Share</h4>
+                    <h4 class="title">Расскажи</h4>
                     <a href="https://twitter.com/home?status={{ share_string }}%20{{ request.build_absolute_uri }}" class="btn btn-twitter btn-round">
                         <i class="fa fa-twitter"></i> Twitter</a>
                     <a href="http://vk.com/share.php?url={{ request.build_absolute_uri }}" class="btn btn-vk btn-round">
