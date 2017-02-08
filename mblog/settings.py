@@ -126,3 +126,5 @@ MEDIA_URL = '/media/'
 REDACTOR_OPTIONS = {'lang': 'ru'}
 REDACTOR_UPLOAD = 'media/'
 REDACTOR_UPLOAD_HANDLER = 'redactor.handlers.DateDirectoryUploader'
+
+LOGIN_URL = '/login/'

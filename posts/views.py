@@ -1,12 +1,15 @@
 ### -*- coding: utf-8 -*- ###
 from urllib.parse import quote_plus
 from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.mail import send_mail, BadHeaderError
 from posts.form import UserForm, UserProfileForm
+from django.core.urlresolvers import reverse
 
 from .form import PostForm, ContactForm
 from .models import Post, Category, UserProfile
@@ -19,9 +22,9 @@ def post_list(request):
     if search:
         queryset_list = queryset_list.filter(
             Q(title__icontains=search) |
-            Q(content__icontains=search) #|
-            #Q(user__first_name__icontains=search) |
-            #Q(user__last_name__icontains=search)
+            Q(content__icontains=search)  # |
+            # Q(user__first_name__icontains=search) |
+            # Q(user__last_name__icontains=search)
         ).distinct()
     paginator = Paginator(queryset_list, 5)  # Show 5 contacts per page
     page = request.GET.get('page')
@@ -106,6 +109,7 @@ def post_delete(request, slug=None, category=None):
     messages.success(request, "Deleted!")
     return redirect(post_list)
 
+
 def contacts(request):
     if request.method == 'POST':
         form = ContactForm(request.POST)
@@ -116,16 +120,17 @@ def contacts(request):
             message = form.cleaned_data['message']
             try:
                 send_mail(subject, name, message, sender)
-            except BadHeaderError: #Защита от уязвимости
+            except BadHeaderError:  # Защита от уязвимости
                 return HttpResponse('Invalid header found')
-            #Переходим на другую страницу, если сообщение отправлено
+            # Переходим на другую страницу, если сообщение отправлено
             messages.success(request, "Отправлено!")
             return render(request, 'contact.html')
     else:
-        #Заполняем форму
+        # Заполняем форму
         form = ContactForm()
-    #Отправляем форму на страницу
+    # Отправляем форму на страницу
     return render(request, 'contact.html', {'form': form})
+
 
 def register(request):
     registered = False
@@ -148,7 +153,35 @@ def register(request):
         user_form = UserForm()
         profile_form = UserProfileForm()
     return render(request,
-                  'login.html',
+                  'regist.html',
                   {'user_form': user_form,
                    'profile_form': profile_form,
                    'registered': registered})
+
+
+def user_login(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(username=username, password=password)
+        if user:
+            if user.is_active:
+                login(request, user)
+                return HttpResponseRedirect(reverse('list'))
+            else:
+                messages.warning(request, "Ваш аккаун не доступен")
+                return render(request, 'login.html')
+        else:
+            print("Не верные данные для входа: {0}, {1}".format(username, password))
+            messages.warning(request, "Неверные данные для входа.")
+            return render(request, 'login.html')
+    else:
+        return render(request, 'login.html', {})
+
+
+@login_required
+def user_logout(request):
+    # Since we know the user is logged in, we can now just log them out.
+    logout(request)
+    # Take the user back to the homepage.
+    return HttpResponseRedirect(reverse('list'))
