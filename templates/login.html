@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Вход | {{block.super}}{% endblock title %}
+{%block content%}
+<div class="page-header header-filter" style="background-image: url('{% static 'img/bg2.jpeg' %}'); background-size: cover; background-position: top center;">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
+					<div class="card card-signup">
+                        {% if registered %}
+								<h4 class="card-title">thank you for registering!</h4>
+                                <a href="{% url 'list' %}">Return to the homepage.</a><br />
+                                {% else %}
+                                <h4 class="card-title">Log in</h4>
+								<form id="user_form" method="post" action="{% url 'login' %}" enctype="multipart/form-data">
+
+                                {% csrf_token %}
+
+                                {{ user_form.as_p }}
+                                {{ profile_form.as_p }}
+
+                                <input type="submit" name="submit" value="Register" />
+                                </form>
+                                {% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+{%endblock content%}

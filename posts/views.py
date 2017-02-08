@@ -1,13 +1,15 @@
 ### -*- coding: utf-8 -*- ###
 from urllib.parse import quote_plus
 from django.contrib import messages
-from django.http import HttpResponseRedirect, Http404
+from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, get_object_or_404, redirect
+from django.core.mail import send_mail, BadHeaderError
+from posts.form import UserForm, UserProfileForm
 
-from .form import PostForm
-from .models import Post, Category
+from .form import PostForm, ContactForm
+from .models import Post, Category, UserProfile
 
 
 def post_list(request):
@@ -78,10 +80,10 @@ def post_detail(request, slug=None, category=None):
     return render(request, "post_detail.html", context)
 
 
-def post_update(request, slug=None):
+def post_update(request, slug=None, category=None):
     if not request.user.is_authenticated():
         raise Http404
-    instance = get_object_or_404(Post, slug=slug)
+    instance = get_object_or_404(Post, slug=slug, category__slug=category)
     form = PostForm(request.POST or None, request.FILES or None, instance=instance)
     if form.is_valid():
         instance = form.save(commit=False)
@@ -96,10 +98,57 @@ def post_update(request, slug=None):
     return render(request, "post_form.html", context)
 
 
-def post_delete(request, slug=None):
+def post_delete(request, slug=None, category=None):
     if not request.user.is_authenticated():
         raise Http404
-    instance = get_object_or_404(Post, slug=slug)
+    instance = get_object_or_404(Post, slug=slug, category__slug=category)
     instance.delete()
     messages.success(request, "Deleted!")
     return redirect(post_list)
+
+def contacts(request):
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            subject = form.cleaned_data['subject']
+            name = form.cleaned_data['name']
+            sender = form.cleaned_data['sender']
+            message = form.cleaned_data['message']
+            try:
+                send_mail(subject, name, message, sender)
+            except BadHeaderError: #Защита от уязвимости
+                return HttpResponse('Invalid header found')
+            #Переходим на другую страницу, если сообщение отправлено
+            messages.success(request, "Отправлено!")
+            return render(request, 'contact.html')
+    else:
+        #Заполняем форму
+        form = ContactForm()
+    #Отправляем форму на страницу
+    return render(request, 'contact.html', {'form': form})
+
+def register(request):
+    registered = False
+    if request.method == 'POST':
+        user_form = UserForm(data=request.POST)
+        profile_form = UserProfileForm(data=request.POST)
+        if user_form.is_valid() and profile_form.is_valid():
+            user = user_form.save()
+            user.set_password(user.password)
+            user.save()
+            profile = profile_form.save(commit=False)
+            profile.user = user
+            if 'picture' in request.FILES:
+                profile.picture = request.FILES['picture']
+            profile.save()
+            registered = True
+        else:
+            print(user_form.errors, profile_form.errors)
+    else:
+        user_form = UserForm()
+        profile_form = UserProfileForm()
+    return render(request,
+                  'login.html',
+                  {'user_form': user_form,
+                   'profile_form': profile_form,
+                   'registered': registered})

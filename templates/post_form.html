@@ -1,12 +1,32 @@
 {% extends "base.html" %}
-
+{% block title %}{{instance.title}} | {{block.super}}{% endblock title %}
 {%block content%}
-<div class="col-sm-8 col-sm-offset-2">
-	<h1>Form</h1>
-	<form method="POST" action="" enctype="multipart/form-data">
-		{% csrf_token %}
-		{{ form.as_p }}
-		<input type="submit" class="btn btn-dafault" name="Create Post" />
-	</form>
+<div class="page-header header-filter header-small" data-parallax="active"
+        {% if instance.image %} style="background-image: url('{{ instance.image.url }}');"
+     {% else %}style="background-image: linear-gradient(60deg, #00bcd4, #1f2fa2);"{% endif %}>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 text-center">
+                <h1 class="title">{{ title }}</h1>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="main main-raised">
+    <div class="container">
+        <div class="section section-text">
+            <div class="row">
+                <div class="col-sm-8 col-sm-offset-2">
+                    <h1>Измеить</h1>
+                    <p>Внесите нужные изменения, после чего нажмите кнопку Отправить</p>
+                    <form method="POST" action="" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <input type="submit" class="btn btn-success" name="Create Post" />
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {%endblock content%}

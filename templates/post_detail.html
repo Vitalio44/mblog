@@ -18,7 +18,7 @@
             <div class="row">
                 <div class="col-md-7 col-md-offset-1">
                     <h3 class="title">{{ title }}</h3>
-                    <p>{{instance.content|linebreaks}}</p>
+                    <p>{% autoescape off %}{{instance.content|linebreaks}}{% endautoescape %}</p>
                 </div>
                 <div class="col-md-2 col-md-offset-1 stats">
                     <h4 class="title">Автор</h4>

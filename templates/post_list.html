@@ -45,7 +45,7 @@
                     <h3 class="card-title">
                         <a href="{{ obj.get_absolute_url }}">{{obj.title}}</a>
                     </h3>
-                    <p class="card-description">{{ obj.content|linebreaks|truncatechars:250 }}</p>
+                    <p class="card-description">{% autoescape off %}{{ obj.content|linebreaks|truncatechars:250 }}{% endautoescape %}</p>
                     <p class="author">
                         Автор: <b>{{ obj.user }}</b>, {{obj.timestamp|timesince}}
                     </p>

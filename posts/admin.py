@@ -1,5 +1,5 @@
 from django.contrib import admin
-
+from posts.models import UserProfile
 from .models import Post, Category
 
 
@@ -20,3 +20,4 @@ class CategoryAdmin(admin.ModelAdmin):
 
 admin.site.register(Post, PostAdmin)
 admin.site.register(Category, CategoryAdmin)
+admin.site.register(UserProfile)
