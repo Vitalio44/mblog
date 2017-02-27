@@ -23,6 +23,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^', include("posts.urls")),
     url(r'^redactor/', include('redactor.urls')),
+
 ]
 
 if settings.DEBUG:

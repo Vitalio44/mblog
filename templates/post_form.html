@@ -14,16 +14,21 @@
 </div>
 <div class="main main-raised">
     <div class="container">
+        {% include "messages.html" %}
         <div class="section section-text">
             <div class="row">
                 <div class="col-sm-8 col-sm-offset-2">
-                    <h1>Измеить</h1>
+                    {% if user.is_superuser %}
+                    <h1>Редактор</h1>
                     <p>Внесите нужные изменения, после чего нажмите кнопку Отправить</p>
                     <form method="POST" action="" enctype="multipart/form-data">
                         {% csrf_token %}
                         {{ form.as_p }}
                         <input type="submit" class="btn btn-success" name="Create Post" />
                     </form>
+                    {% else %}
+                        <p>Вы должны обладать правами суперпользователя для внесения изменений</p>
+                    {% endif %}
                 </div>
             </div>
         </div>

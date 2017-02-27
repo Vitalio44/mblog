@@ -1,7 +1,7 @@
 ### -*- coding: utf-8 -*- ###
 from urllib.parse import quote_plus
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, logout, login
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.db.models import Q
@@ -64,7 +64,7 @@ def post_create(request):
         instance = form.save(commit=False)
         instance.user = request.user
         instance.save()
-        messages.success(request, "Created")
+        messages.success(request, "Пост создан")
         return HttpResponseRedirect(instance.get_absolute_url())
     context = {
         "form": form,
@@ -91,7 +91,7 @@ def post_update(request, slug=None, category=None):
     if form.is_valid():
         instance = form.save(commit=False)
         instance.save()
-        messages.success(request, "Updated!")
+        messages.success(request, "Обновлено!")
         return HttpResponseRedirect(instance.get_absolute_url())
     context = {
         "instance": instance,
@@ -106,7 +106,7 @@ def post_delete(request, slug=None, category=None):
         raise Http404
     instance = get_object_or_404(Post, slug=slug, category__slug=category)
     instance.delete()
-    messages.success(request, "Deleted!")
+    messages.success(request, "Удалено!")
     return redirect(post_list)
 
 
@@ -147,7 +147,9 @@ def register(request):
                 profile.picture = request.FILES['picture']
             profile.save()
             registered = True
+            login(request, user)
         else:
+            messages.warning(request, user_form.errors, profile_form.errors)
             print(user_form.errors, profile_form.errors)
     else:
         user_form = UserForm()
