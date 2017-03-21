@@ -2,6 +2,8 @@
 {% load static %}
 {% block title %}Реистрация | {{block.super}}{% endblock title %}
 {%block content%}
+        <body>
+{% include "nav.html" %}
 <div class="page-header header-filter" style="background-image: url('{% static 'img/bg2.jpeg' %}'); background-size: cover; background-position: top center;">
     <div class="container">
         {% include "messages.html" %}
@@ -56,4 +58,5 @@
 		</div>
 
 </div>
+    </body>
 {%endblock content%}

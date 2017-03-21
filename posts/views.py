@@ -102,7 +102,7 @@ def post_update(request, slug=None, category=None):
 
 
 def post_delete(request, slug=None, category=None):
-    if not request.user.is_authenticated():
+    if not request.user.is_superuser:
         raise Http404
     instance = get_object_or_404(Post, slug=slug, category__slug=category)
     instance.delete()
@@ -179,6 +179,12 @@ def user_login(request):
             return render(request, 'login.html')
     else:
         return render(request, 'login.html', {})
+
+
+def user_page(request):
+    if not request.user.is_authenticated():
+        raise Http404
+    return render(request, 'user_page.html')
 
 
 @login_required

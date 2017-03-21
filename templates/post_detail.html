@@ -1,44 +1,48 @@
 {% extends "base.html" %}
 {% block title %}{{instance.title}} | {{block.super}}{% endblock title %}
 {%block content%}
-<div class="page-header header-filter header-small" data-parallax="active"
-        {% if instance.image %} style="background-image: url('{{ instance.image.url }}');"
-     {% else %}style="background-image: linear-gradient(60deg, #00bcd4, #1f2fa2);"{% endif %}>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2 text-center">
-                <h1 class="title">{{ title }}</h1>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="main main-raised">
-    <div class="container">
-        <div class="section section-text">
+    <body class="blog-post">
+    {% include "nav.html" %}
+    <div class="page-header header-filter header-small" data-parallax="active"
+            {% if instance.image %} style="background-image: url('{{ instance.image.url }}');"
+         {% else %}style="background-image: linear-gradient(60deg, #00bcd4, #1f2fa2);"{% endif %}>
+        <div class="container">
             <div class="row">
-                <div class="col-md-7 col-md-offset-1">
-                    <h3 class="title">{{ title }}</h3>
-                    <p>{% autoescape off %}{{instance.content|linebreaks}}{% endautoescape %}</p>
-                </div>
-                <div class="col-md-2 col-md-offset-1 stats">
-                    <h4 class="title">Автор</h4>
-                    <ul class="list-unstyled">
-                        <li><b>{{ instance.user }}</b></li>
-                    </ul>
-                    <hr />
-                    <h4 class="title">Расскажи</h4>
-                    <a href="https://twitter.com/home?status={{ share_string }}%20{{ request.build_absolute_uri }}" class="btn btn-twitter btn-round">
-                        <i class="fa fa-twitter"></i> Twitter</a>
-                    <a href="http://vk.com/share.php?url={{ request.build_absolute_uri }}" class="btn btn-vk btn-round">
-                        <i class="fa fa-vk"></i> ВКонтакте</a>
-                    <a href="https://www.facebook.com/sharer.php?u={{ request.build_absolute_uri }}" class="btn btn-facebook btn-round">
-                        <i class="fa fa-facebook-square"></i> Facebook</a>
-                    <a href="https://plus.google.com/share?url={{ request.build_absolute_uri }}" class="btn btn-google btn-round">
-                        <i class="fa fa-google-plus"></i> Google</a>
-                    <hr />
+                <div class="col-md-8 col-md-offset-2 text-center">
+                    <h1 class="title">{{ title }}</h1>
                 </div>
             </div>
         </div>
     </div>
-</div>
+    <div class="main main-raised">
+        <div class="container">
+            <div class="section section-text">
+                <div class="row">
+                    <div class="col-md-7 col-md-offset-1">
+                        <h3 class="title">{{ title }}</h3>
+                        <p>{% autoescape off %}{{instance.content|linebreaks}}{% endautoescape %}</p>
+                    </div>
+                    <div class="col-md-2 col-md-offset-1 stats">
+                        <h4 class="title">Автор</h4>
+                        <ul class="list-unstyled">
+                            <li><b>{{ instance.user }}</b></li>
+                        </ul>
+                        <hr />
+                        <h4 class="title">Расскажи</h4>
+                        <a href="https://twitter.com/home?status={{ share_string }}%20{{ request.build_absolute_uri }}" class="btn btn-twitter btn-round">
+                            <i class="fa fa-twitter"></i> Twitter</a>
+                        <a href="http://vk.com/share.php?url={{ request.build_absolute_uri }}" class="btn btn-vk btn-round">
+                            <i class="fa fa-vk"></i> ВКонтакте</a>
+                        <a href="https://www.facebook.com/sharer.php?u={{ request.build_absolute_uri }}" class="btn btn-facebook btn-round">
+                            <i class="fa fa-facebook-square"></i> Facebook</a>
+                        <a href="https://plus.google.com/share?url={{ request.build_absolute_uri }}" class="btn btn-google btn-round">
+                            <i class="fa fa-google-plus"></i> Google</a>
+                        <hr />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include "footer.html" %}
+    </body>
 {%endblock content%}

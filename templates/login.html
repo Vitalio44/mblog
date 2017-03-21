@@ -2,6 +2,8 @@
 {% load static %}
 {% block title %}Вход | {{block.super}}{% endblock title %}
 {%block content%}
+    <body class="login-page">
+{% include "nav.html" %}
 <div class="page-header header-filter" style="background-image: url('{% static 'img/bg2.jpeg' %}'); background-size: cover; background-position: top center;">
 		<div class="container">
             {% include "messages.html" %}
@@ -12,6 +14,17 @@
                             {% csrf_token %}
 							<div class="header header-primary text-center">
 								<h4 class="card-title">Вход на сайт</h4>
+                                <div class="social-line">
+									<a href="#" class="btn btn-just-icon btn-simple">
+										<i class="fa fa-facebook-square"></i>
+									</a>
+									<a href="#" class="btn btn-just-icon btn-simple">
+										<i class="fa fa-vk"></i>
+									</a>
+									<a href="#" class="btn btn-just-icon btn-simple">
+										<i class="fa fa-google-plus"></i>
+									</a>
+								</div>
 							</div>
 							<p class="description text-center">Введите свои данные</p>
 							<div class="content">
@@ -44,4 +57,5 @@
 		</div>
 
 	</div>
+    </body>
 {%endblock content%}

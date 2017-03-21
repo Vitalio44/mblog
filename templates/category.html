@@ -3,6 +3,8 @@
 {% block title %}{{ category.name }} | {{block.super}}{% endblock title %}
 
 {%block content%}
+    <body>
+{% include "nav.html" %}
     <div class="page-header header-filter header-small" data-parallax="active"
         {% if category.image %} style="background-image: url('{{ category.image.url }}');"{% endif %}>
     <div class="container">
@@ -53,4 +55,5 @@
 </div>
 </div>
 </div>
+    </body>
 {% endblock %}

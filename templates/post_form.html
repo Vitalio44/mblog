@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% block title %}{{instance.title}} | {{block.super}}{% endblock title %}
 {%block content%}
+        <body>
+{% include "nav.html" %}
 <div class="page-header header-filter header-small" data-parallax="active"
         {% if instance.image %} style="background-image: url('{{ instance.image.url }}');"
      {% else %}style="background-image: linear-gradient(60deg, #00bcd4, #1f2fa2);"{% endif %}>
@@ -34,4 +36,6 @@
         </div>
     </div>
 </div>
+        {% include "footer.html" %}
+    </body>
 {%endblock content%}

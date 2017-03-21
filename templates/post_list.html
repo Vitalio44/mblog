@@ -1,79 +1,83 @@
 {% extends "base.html" %}
 {% block content %}
-{% include "img_top.html" %}
-<div class="main main-raised">
-<div class="container">
-{% include "messages.html" %}
-<div class="section">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2 text-center">
-            <h2 class="title">{{ title }}</h2>
-            <h5 class="description">This is the paragraph where you can write more details about your product. Keep you user engaged by providing meaningful information.</h5>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6 col-md-offset-3 text-center">
-            <ul class="nav nav-pills nav-pills-primary">
-                {% for cat in category_list %}
-                <li><a href="{{ cat.get_absolute_url }}">{{ cat.name }}</a></li>
-                {% endfor %}
-            </ul>
-        </div>
-        <div class="col-md-12 text-right">
-            <form class="navbar-form navbar-right" method="get" action="">
-                <div class="form-group form-white is-empty">
-                    <input class="form-control" type="text" name="s" placeholder="Search post" value="{{ request.GET.s }}">
-                    <span class="material-input"></span>
-                    <button type="submit" value="Search" class="btn btn-white btn-raised btn-fab btn-fab-mini"><i class="material-icons">search</i></button>
-                </div>
-            </form>
-        </div>
-    </div>
-    <div class="row">
-    {% for obj in object_list %}
-    <div class="col-md-10 col-md-offset-1">
-        <div class="card card-plain card-blog">
+    <body class="blog-posts">
+        {% include "nav.html" %}
+        {% include "img_top.html" %}
+        <div class="main main-raised">
+        <div class="container">
+        {% include "messages.html" %}
+        <div class="section">
             <div class="row">
-                <div class="col-md-4">
-                    {% if obj.image %}
-                    <div class="card-image">
-                        <img class="img img-raised" src="{{ obj.image.url }}">
-                        <div class="ripple-container"></div></div>
-                    {% endif %}
+                <div class="col-md-8 col-md-offset-2 text-center">
+                    <h2 class="title">{{ title }}</h2>
+                    <h5 class="description">This is the paragraph where you can write more details about your product. Keep you user engaged by providing meaningful information.</h5>
                 </div>
-                <div class="col-md-8">
-                    <!--<h6 class="category text-info">Canegory</h6>-->
-                    <h3 class="card-title">
-                        <a href="{{ obj.get_absolute_url }}">{{obj.title}}</a>
-                    </h3>
-                    <p class="card-description">{% autoescape off %}{{ obj.content|linebreaks|truncatechars:250 }}{% endautoescape %}</p>
-                    <p class="author">
-                        Автор: <b>{{ obj.user }}</b>, {{obj.timestamp|timesince}}
-                    </p>
+            </div>
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 text-center">
+                    <ul class="nav nav-pills nav-pills-primary">
+                        {% for cat in category_list %}
+                        <li><a href="{{ cat.get_absolute_url }}">{{ cat.name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="col-md-12 text-right">
+                    <form class="navbar-form navbar-right" method="get" action="">
+                        <div class="form-group form-white is-empty">
+                            <input class="form-control" type="text" name="s" placeholder="Search post" value="{{ request.GET.s }}">
+                            <span class="material-input"></span>
+                            <button type="submit" value="Search" class="btn btn-white btn-raised btn-fab btn-fab-mini"><i class="material-icons">search</i></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="row">
+            {% for obj in object_list %}
+            <div class="col-md-10 col-md-offset-1">
+                <div class="card card-plain card-blog">
+                    <div class="row">
+                        <div class="col-md-4">
+                            {% if obj.image %}
+                            <div class="card-image">
+                                <img class="img img-raised" src="{{ obj.image.url }}">
+                                <div class="ripple-container"></div></div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-8">
+                            <!--<h6 class="category text-info">Canegory</h6>-->
+                            <h3 class="card-title">
+                                <a href="{{ obj.get_absolute_url }}">{{obj.title}}</a>
+                            </h3>
+                            <p class="card-description">{% autoescape off %}{{ obj.content|linebreaks|truncatechars:250 }}{% endautoescape %}</p>
+                            <p class="author">
+                                Автор: <b>{{ obj.user }}</b>, {{obj.timestamp|timesince}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            </div>
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <ul class="pagination pagination-info">
+                        {% if object_list.has_previous %}
+                        <li><a href="?page={{ object_list.previous_page_number }}{% if request.GET.s %}&s={{ request.GET.s }}{% endif %}"> назад</a></li>
+                        {% endif %}
+                        <li class="active"><a>{{ object_list.number }}</a></li>
+                        <li><a>из</a></li>
+                        <li><a>{{ object_list.paginator.num_pages }}</a></li>
+                        {% if object_list.has_next %}
+                        <li><a href="?page={{ object_list.next_page_number }}{% if request.GET.s %}&s={{ request.GET.s }}{% endif %}">вперед </a></li>
+                        {% endif %}
+                    </ul>
                 </div>
             </div>
         </div>
-    </div>
-    {% endfor %}
-    </div>
-    <div class="row">
-        <div class="col-md-12 text-center">
-            <ul class="pagination pagination-info">
-                {% if object_list.has_previous %}
-                <li><a href="?page={{ object_list.previous_page_number }}{% if request.GET.s %}&s={{ request.GET.s }}{% endif %}"> назад</a></li>
-                {% endif %}
-                <li class="active"><a>{{ object_list.number }}</a></li>
-                <li><a>из</a></li>
-                <li><a>{{ object_list.paginator.num_pages }}</a></li>
-                {% if object_list.has_next %}
-                <li><a href="?page={{ object_list.next_page_number }}{% if request.GET.s %}&s={{ request.GET.s }}{% endif %}">вперед </a></li>
-                {% endif %}
-            </ul>
         </div>
-    </div>
-</div>
-</div>
-</div>
+        </div>
+        {% include "footer.html" %}
+    </body>
 {% endblock content %}
 
 

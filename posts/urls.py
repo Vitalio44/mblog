@@ -13,6 +13,7 @@ from .views import (
     register,
     user_login,
     user_logout,
+    user_page,
 )
 
 urlpatterns = [
@@ -22,6 +23,7 @@ urlpatterns = [
     url(r'^registration/$', register, name="regist"),
     url(r'^login/$', user_login, name='login'),
     url(r'^logout/$', user_logout, name='logout'),
+    url(r'^user/$', user_page, name='user_page'),
     url(r'^(?P<category>[-\w]+)/(?P<slug>[-\w]+)/$', post_detail, name="detail"),
     url(r'^(?P<category>[-\w]+)/(?P<slug>[-\w]+)/up/$', post_update, name="update"),
     url(r'^(?P<category>[-\w]+)/(?P<slug>[-\w]+)/del/$', post_delete, name="delete"),
