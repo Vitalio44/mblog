@@ -21,6 +21,16 @@
                     <div class="col-md-7 col-md-offset-1">
                         <h3 class="title">{{ title }}</h3>
                         <p>{% autoescape off %}{{instance.content|linebreaks}}{% endautoescape %}</p>
+                        <hr>
+                        <br>
+                        <div>
+                        {% for comment in comments %}
+                        <blockquote>
+							<p>{{ comment.content }}</p>
+							<small>{{ comment.user }} | {{ comment.timestamp }}</small>
+						</blockquote>
+                            {% endfor %}
+                        </div>
                     </div>
                     <div class="col-md-2 col-md-offset-1 stats">
                         <h4 class="title">Автор</h4>

@@ -1,6 +1,7 @@
 ### -*- coding: utf-8 -*- ###
 from urllib.parse import quote_plus
 from django.contrib import messages
+from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth import authenticate, logout, login
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, Http404, HttpResponse
@@ -10,7 +11,9 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.core.mail import send_mail, BadHeaderError
 from posts.form import UserForm, UserProfileForm
 from django.core.urlresolvers import reverse
+from django.contrib.sitemaps import Sitemap
 
+from comments.models import Comment
 from .form import PostForm, ContactForm
 from .models import Post, Category, UserProfile
 
@@ -75,10 +78,14 @@ def post_create(request):
 def post_detail(request, slug=None, category=None):
     instance = get_object_or_404(Post, slug=slug, category__slug=category)
     share_string = quote_plus(instance.title)
+    content_type = ContentType.objects.get_for_model(Post)
+    obj_id = instance.id
+    comments = Comment.objects.filter(content_type=content_type, object_id=obj_id)
     context = {
         "instance": instance,
         "title": instance.title,
         "share_string": share_string,
+        "comments": comments
     }
     return render(request, "post_detail.html", context)
 
@@ -193,3 +200,14 @@ def user_logout(request):
     logout(request)
     # Take the user back to the homepage.
     return HttpResponseRedirect(reverse('list'))
+
+
+class StaticViewSitemap(Sitemap):
+    priority = 0.5
+    changefreq = 'weekly'
+
+    def items(self):
+        return ['post_list', 'contacts']
+
+    def location(self, item):
+        return reverse(item)
